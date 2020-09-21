@@ -101,35 +101,132 @@ func maxInt(a, b int) int {
 	}
 }
 
-// 三种遍历方式
-// 深度优先DFS
-func (self *BinarySearchTreeContainer) TraverseBFS() {
-	if self.root == nil {
+// 遍历
+func (self *BinarySearchTreeContainer) Traverse() {
+	fmt.Print("深度优先遍历 - 前序遍历 - 递归 :")
+	self.dfsPreOrderRecursionTraversal(self.root)
+	fmt.Println()
+
+	fmt.Print("深度优先遍历 - 前序遍历 - 非递归 :")
+	self.dfsPreOrderNotRecursionTraversal()
+	fmt.Println()
+
+	fmt.Print("深度优先遍历 - 中序遍历 - 递归 :")
+	self.dfsMidOrderRecursionTraversal(self.root)
+	fmt.Println()
+
+	fmt.Print("深度优先遍历 - 中序遍历 - 非递归 :")
+	self.dfsMidOrderNotRecursionTraversal()
+	fmt.Println()
+
+	fmt.Print("深度优先遍历 - 后序遍历 - 递归 :")
+	self.dfsPostOrderRecursionTraversal(self.root)
+	fmt.Println()
+
+	fmt.Print("深度优先遍历 - 后序遍历 - 非递归 :")
+	self.dfsPostOrderNotRecursionTraversal()
+	fmt.Println()
+
+	fmt.Print("广度优先遍历 - 递归 :")
+	nodes := []*treeNode{}
+	nodes = append(nodes, self.root)
+	self.bfsRecursionTraversal(&nodes)
+	fmt.Println()
+}
+
+// 深度优先遍历 - 前序遍历 - 递归
+func (self *BinarySearchTreeContainer) dfsPreOrderRecursionTraversal(node *treeNode) {
+	if node == nil {
+		return
+	}
+	fmt.Print(" ", node.Val)
+	self.dfsPreOrderRecursionTraversal(node.Left)
+	self.dfsPreOrderRecursionTraversal(node.Right)
+}
+
+// 深度优先遍历 - 中序遍历 - 递归
+func (self *BinarySearchTreeContainer) dfsMidOrderRecursionTraversal(node *treeNode) {
+	if node == nil {
+		return
+	}
+	self.dfsMidOrderRecursionTraversal(node.Left)
+	fmt.Print(" ", node.Val)
+	self.dfsMidOrderRecursionTraversal(node.Right)
+}
+
+// 深度优先遍历 - 后序遍历 - 递归
+func (self *BinarySearchTreeContainer) dfsPostOrderRecursionTraversal(node *treeNode) {
+	if node == nil {
+		return
+	}
+	self.dfsPostOrderRecursionTraversal(node.Left)
+	self.dfsPostOrderRecursionTraversal(node.Right)
+	fmt.Print(" ", node.Val)
+}
+
+// 广度优先遍历 - 递归
+func (self *BinarySearchTreeContainer) bfsRecursionTraversal(nodes *[]*treeNode) {
+	if nodes == nil || len(*nodes) == 0 {
 		return
 	}
 
-	var resultArr []int
-	stack := new(linkedlist.Stack)
-	stack.Push(self.root)
-
-	for !stack.Empty() {
-		pop := stack.Pop()
-		switch v := pop.(type) {
-		case *treeNode:
-			var popElement *treeNode
-			popElement = v
-
-			resultArr = append(resultArr, popElement.Val)
-
-			if popElement.Right != nil {
-				stack.Push(popElement.Right)
-			}
-
-			if popElement.Left != nil {
-				stack.Push(popElement.Left)
-			}
+	nextLevelNode := []*treeNode{}
+	for _, node := range *nodes {
+		fmt.Print(" ", node.Val)
+		if node.Left != nil {
+			nextLevelNode = append(nextLevelNode, node.Left)
+		}
+		if node.Right != nil {
+			nextLevelNode = append(nextLevelNode, node.Right)
 		}
 	}
 
-	fmt.Println(fmt.Sprintf("深度遍历DFS: %v", resultArr))
+	self.bfsRecursionTraversal(&nextLevelNode)
+}
+
+// 深度优先遍历 - 前序遍历 - 非递归
+func (self *BinarySearchTreeContainer) dfsPreOrderNotRecursionTraversal() {
+	node := self.root
+	stack := new(linkedlist.Stack)
+
+	for !stack.Empty() || node != nil {
+		if node != nil {
+			fmt.Print(" ", node.Val)
+			stack.Push(node)
+			node = node.Left
+		} else {
+			pop := stack.Pop()
+			switch v := pop.(type) {
+			case *treeNode:
+				node = v
+				node = node.Right
+			}
+		}
+	}
+}
+
+// 深度优先遍历 - 中序遍历 - 非递归
+func (self *BinarySearchTreeContainer) dfsMidOrderNotRecursionTraversal() {
+	node := self.root
+	stack := new(linkedlist.Stack)
+
+	for !stack.Empty() || node != nil {
+		if node != nil {
+			stack.Push(node)
+			node = node.Left
+		} else {
+			pop := stack.Pop()
+			switch v := pop.(type) {
+			case *treeNode:
+				node = v
+				fmt.Print(" ", node.Val)
+				node = node.Right
+			}
+		}
+	}
+}
+
+// 深度优先遍历 - 后序遍历 - 非递归
+func (self *BinarySearchTreeContainer) dfsPostOrderNotRecursionTraversal() {
+	fmt.Print(" 未实现，参考：https://www.cnblogs.com/bigsai/p/11393609.html")
 }

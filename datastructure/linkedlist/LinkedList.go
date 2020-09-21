@@ -1,7 +1,10 @@
 package linkedlist
 
-// 链表节点
+// 双向链表节点
 type linkedListNode struct {
-	Val  interface{}
+	Val interface{}
+
+	prev *linkedListNode
+
 	next *linkedListNode
 }

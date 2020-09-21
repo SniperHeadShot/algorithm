@@ -15,13 +15,12 @@ func (self *Stack) Empty() bool {
 func (self *Stack) Pop() interface{} {
 	var result *linkedListNode
 	if self.head == self.tail {
-		result = self.head
+		result = self.tail
 		self.head = nil
 	} else {
-		result = self.head
-		// 头节点可能为空
-		if self.head != nil {
-			self.head = result.next
+		result = self.tail
+		if self.tail != nil {
+			self.tail = self.tail.prev
 		}
 	}
 	if result == nil {
@@ -40,6 +39,7 @@ func (self *Stack) Push(val interface{}) {
 		self.tail = node
 	} else {
 		self.tail.next = node
+		node.prev = self.tail
 		self.tail = node
 	}
 }
