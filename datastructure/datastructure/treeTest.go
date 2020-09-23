@@ -11,7 +11,7 @@ func main() {
 }
 
 func binarySearchTreeTest() {
-	var mdArr = []int{9, 12, 5, 8, 3, 22}
+	var mdArr = []int{15, 6, 23, 4, 7, 19, 71}
 
 	binarySearchTreeContainer := new(tree.BinarySearchTreeContainer)
 	for _, val := range mdArr {
