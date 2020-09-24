@@ -124,7 +124,11 @@ func (self *BinarySearchTreeContainer) Traverse() {
 	fmt.Println()
 
 	fmt.Print("深度优先遍历 - 后序遍历 - 非递归 :")
-	self.dfsPostOrderNotRecursionTraversal()
+	self.dfsPostOrderNotRecursionTraversal_1()
+	fmt.Println()
+
+	fmt.Print("深度优先遍历 - 后序遍历 - 非递归 - 双栈法 :")
+	self.dfsPostOrderNotRecursionTraversal_2()
 	fmt.Println()
 
 	fmt.Print("广度优先遍历 - 递归 :")
@@ -226,7 +230,64 @@ func (self *BinarySearchTreeContainer) dfsMidOrderNotRecursionTraversal() {
 	}
 }
 
-// 深度优先遍历 - 后序遍历 - 非递归
-func (self *BinarySearchTreeContainer) dfsPostOrderNotRecursionTraversal() {
-	fmt.Print(" 未实现，参考：https://www.cnblogs.com/bigsai/p/11393609.html")
+// 深度优先遍历 - 后序遍历 - 非递归 - 传统
+func (self *BinarySearchTreeContainer) dfsPostOrderNotRecursionTraversal_1() {
+	stack := linkedlist.Stack{}
+	mp := make(map[int]int)
+	node := self.root
+
+	for !stack.Empty() || node != nil {
+		if node != nil {
+			stack.Push(node)
+			mp[node.Val] = 1
+			node = node.Left
+		} else {
+			peek := stack.Peek()
+			if v, ok := peek.(*treeNode); ok {
+				if mp[v.Val] == 2 {
+					stack.Pop()
+					fmt.Printf("%d ", v.Val)
+					node = nil
+				} else {
+					mp[v.Val] = 2
+					node = v.Right
+				}
+			}
+		}
+	}
+}
+
+// 深度优先遍历 - 后序遍历 - 非递归 - 双栈法
+func (self *BinarySearchTreeContainer) dfsPostOrderNotRecursionTraversal_2() {
+	// 收集节点个给 stack2
+	stack1 := linkedlist.Stack{}
+	// 真正存储后序遍历节点的栈
+	stack2 := linkedlist.Stack{}
+
+	node := self.root
+	if node == nil {
+		return
+	} else {
+		stack1.Push(node)
+	}
+
+	for !stack1.Empty() {
+		pop := stack1.Pop()
+		stack2.Push(pop)
+		if v, ok := pop.(*treeNode); ok {
+			if v.Left != nil {
+				stack1.Push(v.Left)
+			}
+			if v.Right != nil {
+				stack1.Push(v.Right)
+			}
+		}
+	}
+
+	for !stack2.Empty() {
+		pop := stack2.Pop()
+		if v, ok := pop.(*treeNode); ok {
+			fmt.Print(" ", v.Val)
+		}
+	}
 }

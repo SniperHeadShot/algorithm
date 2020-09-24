@@ -11,7 +11,16 @@ func (self *Stack) Empty() bool {
 	return self.head == nil
 }
 
-// 获取栈顶元素
+// 获取栈顶元素 - 不弹栈
+func (self *Stack) Peek() interface{} {
+	if self.tail == nil {
+		return nil
+	} else {
+		return self.tail.Val
+	}
+}
+
+// 获取栈顶元素 - 并弹栈
 func (self *Stack) Pop() interface{} {
 	var result *linkedListNode
 	if self.head == self.tail {

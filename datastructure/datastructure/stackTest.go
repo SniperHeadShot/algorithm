@@ -19,6 +19,11 @@ func stackTest() {
 		stack.Push(val)
 	}
 
+	peek := stack.Peek()
+	if v, ok := peek.(int); ok {
+		fmt.Println(fmt.Sprintf("Peek获得: %v", v))
+	}
+
 	for !stack.Empty() {
 		pop := stack.Pop()
 		switch v := pop.(type) {
