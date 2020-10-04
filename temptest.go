@@ -1,24 +1,46 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"unsafe"
+)
 
 func main() {
-	var t1, t2 interface{}
-	t1 = test1{
-		Id: 1,
-	}
-	t2 = Test2{
-		Id: 2,
+	str1 := "str1"
+	str2 := "str11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111adaedaedaedae"
+
+	sli := make([]int, 0, 10)
+	mp1 := make(map[string]int)
+	mp2 := make(map[string]test1)
+
+	mp3 := map[string]string{}
+
+	test1 := test1{
+		Id1: 1,
+		Id2: 2,
+		Id3: 3,
+		Id4: 4,
 	}
 
-	t1, ok1 := t1.(test1)
-	fmt.Println("t1.t", t1, "t1.ok", ok1)
-	t2, ok2 := t2.(Test2)
-	fmt.Println("t2.t", t2, "t2.ok", ok2)
+	fmt.Println(unsafe.Sizeof(str1))
+	fmt.Println(unsafe.Sizeof(str2))
+	fmt.Println(unsafe.Sizeof(sli))
+	fmt.Println("====================")
+	fmt.Println(unsafe.Sizeof(mp1))
+	fmt.Println(unsafe.Sizeof(mp2))
+	fmt.Println(unsafe.Sizeof(mp3))
+	fmt.Println(unsafe.Sizeof(&test1))
+	fmt.Println(unsafe.Sizeof(test1))
+	fmt.Println(unsafe.Sizeof(int8(8)))
+	fmt.Printf("%d", unsafe.Sizeof(&test1))
 }
 
 type test1 struct {
-	Id int
+	Id1 int8
+	Id2 int16
+	Id3 int32
+	Id4 int8
+	Id5 float64
 }
 
 type Test2 struct {
